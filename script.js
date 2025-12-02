@@ -17,16 +17,70 @@ const initSmoothScroll = () => {
 };
 
 const initContactForm = () => {
-    const form = document.querySelector(".contact-form");
-    if (!form) return;
+    const form = document.querySelector("[data-contact-form]");
+    const iframe = document.getElementById("form-submit-frame");
+    if (!form || !iframe) return;
 
-    form.addEventListener("submit", e => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const subject = `Portfolio inquiry from ${formData.get("name")}`;
-        const body = `${formData.get("message")}%0D%0A%0D%0AFrom: ${formData.get("name")} (${formData.get("email")})`;
-        window.location.href = `mailto:hey@chandanmalakar.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+    const toast = document.getElementById("form-toast");
+    let toastTimeoutId;
+
+    const showToast = (message, state = "success") => {
+        if (!toast) return;
+        if (toastTimeoutId) clearTimeout(toastTimeoutId);
+        toast.textContent = message;
+        toast.dataset.state = state;
+        toast.hidden = false;
+        toastTimeoutId = setTimeout(() => {
+            toast.hidden = true;
+            toast.removeAttribute("data-state");
+        }, 4500);
+    };
+
+    const setSubmitting = isSubmitting => {
+        const submitButton = form.querySelector("button[type='submit']");
+        if (!submitButton) return;
+        submitButton.disabled = isSubmitting;
+        if (isSubmitting) {
+            submitButton.setAttribute("aria-busy", "true");
+        } else {
+            submitButton.removeAttribute("aria-busy");
+        }
+    };
+
+    form.addEventListener("submit", () => {
+        if (form.dataset.submitting === "true") return;
+        form.dataset.submitting = "true";
+        showToast("Sending signal…", "pending");
+        setSubmitting(true);
+    });
+
+    iframe.addEventListener("load", () => {
+        if (form.dataset.submitting !== "true") return;
+        form.dataset.submitting = "false";
+        setSubmitting(false);
+        showToast("Message delivered. I’ll be in touch soon.", "success");
         form.reset();
+    });
+};
+
+const initResumeDownload = () => {
+    const trigger = document.querySelector("[data-resume-download]");
+    if (!trigger) return;
+
+    const source = trigger.getAttribute("data-resume-src");
+    if (!source) return;
+    const filename = trigger.getAttribute("data-resume-filename") || "Chandan-Malakar-Resume.pdf";
+
+    trigger.addEventListener("click", event => {
+        event.preventDefault();
+        const tempLink = document.createElement("a");
+        tempLink.href = source;
+        tempLink.download = filename;
+        tempLink.rel = "noopener";
+        tempLink.target = "_self";
+        document.body.appendChild(tempLink);
+        tempLink.click();
+        tempLink.remove();
     });
 };
 
@@ -74,6 +128,7 @@ window.addEventListener("DOMContentLoaded", () => {
     initSmoothScroll();
     initContactForm();
     initMobileNav();
+    initResumeDownload();
     if (initialHash) {
         requestAnimationFrame(() => {
             const target = document.querySelector(initialHash);

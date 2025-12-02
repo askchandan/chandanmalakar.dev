@@ -240,7 +240,7 @@
                     <h2 id="resume-title">Download the full story.</h2>
                     <p>Two pages covering education, sprint-by-sprint experience, certifications, and awards.</p>
                 </div>
-                <a class="btn" href="docs/Chandan-Malakar-Resume.pdf" download>Download PDF</a>
+                <button class="btn" type="button" data-resume-download data-resume-src="docs/Chandan-Malakar-Resume.pdf" data-resume-filename="Chandan-Malakar-Resume.pdf">Download PDF</button>
             </div>
         </section>
 
@@ -250,7 +250,10 @@
                 <h2 id="contact-title">Let’s build the next AI workflow.</h2>
             </div>
             <div class="contact-content">
-                <form class="contact-form">
+                <form class="contact-form" data-contact-form action="https://formsubmit.co/chandanmalakar7549@gmail.com" method="POST" target="form-submit-frame">
+                    <input type="hidden" name="_subject" value="New portfolio inquiry">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="table">
                     <label>
                         Name
                         <input type="text" name="name" placeholder="Grace Hopper" required>
@@ -265,6 +268,7 @@
                     </label>
                     <button type="submit" class="btn">Send signal</button>
                 </form>
+                <iframe name="form-submit-frame" id="form-submit-frame" hidden aria-hidden="true" title="Form submission frame"></iframe>
                 <div class="contact-meta">
                     <p class="label">Signal path</p>
                     <ul>
