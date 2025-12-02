@@ -73,6 +73,17 @@ main {
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease, letter-spacing 0.25s ease;
+    transform-origin: center;
+}
+
+.logo:hover,
+.logo:focus-visible {
+    transform: scale(1.08);
+    letter-spacing: 0.14em;
 }
 
 .nav-links {
@@ -350,6 +361,17 @@ p {
     padding: 1.5rem;
     background: var(--surface);
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.profile-card:hover,
+.work-grid article:hover,
+.project-grid article:hover,
+.contact-form:hover,
+.contact-meta:hover {
+    transform: translateY(-10px);
+    border-color: rgba(215, 255, 107, 0.45);
+    box-shadow: 0 25px 65px rgba(0, 0, 0, 0.45), 0 0 40px rgba(215, 255, 107, 0.15);
 }
 
 .contact-form {
@@ -552,5 +574,97 @@ textarea:focus {
     .hero-portrait {
         max-width: 320px;
         margin: 0 auto;
+    }
+}
+
+@media (max-width: 768px) {
+    main {
+        padding: 4rem 1.25rem;
+        gap: 2rem;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .hero {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtext {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-cta {
+        justify-content: center;
+    }
+
+    .hero-cta .btn {
+        width: min(280px, 100%);
+    }
+
+    .profile-card,
+    .work-grid article,
+    .project-grid article,
+    .contact-form,
+    .contact-meta {
+        padding: 1.25rem;
+    }
+
+    .resume-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 540px) {
+    body {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+    }
+
+    .nav-column {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+    }
+
+    .nav-links {
+        justify-content: flex-start;
+    }
+
+    .hero {
+        text-align: left;
+    }
+
+    .hero-cta {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-cta .btn {
+        width: 100%;
+    }
+
+    .tag-cloud,
+    .pill-list {
+        gap: 0.35rem;
+    }
+
+    h1 {
+        font-size: clamp(2.3rem, 12vw, 3rem);
+    }
+
+    .cta-badge {
+        width: auto;
+        align-self: flex-end;
     }
 }
