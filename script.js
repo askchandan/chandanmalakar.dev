@@ -9,6 +9,8 @@ const initSmoothScroll = () => {
             if (target) {
                 event.preventDefault();
                 target.scrollIntoView({ behavior: "smooth", block: "start" });
+                const cleanUrl = `${window.location.pathname}${window.location.search}`;
+                history.replaceState(null, "", cleanUrl);
             }
         });
     });
@@ -28,31 +30,28 @@ const initContactForm = () => {
     });
 };
 
-const handleInitialHashScroll = () => {
-    const initialHash = window.location.hash;
-    if (!initialHash) {
-        window.scrollTo(0, 0);
-        return;
-    }
+const initialHash = window.location.hash;
+if ("scrollRestoration" in window.history) {
+    window.history.scrollRestoration = "manual";
+}
 
+if (initialHash) {
     const cleanUrl = `${window.location.pathname}${window.location.search}`;
     history.replaceState(null, "", cleanUrl);
     window.scrollTo(0, 0);
-
-    requestAnimationFrame(() => {
-        const target = document.querySelector(initialHash);
-        if (target) {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-    });
-};
-
-if ("scrollRestoration" in window.history) {
-    window.history.scrollRestoration = "manual";
 }
 
 window.addEventListener("DOMContentLoaded", () => {
     initSmoothScroll();
     initContactForm();
-    handleInitialHashScroll();
+    if (initialHash) {
+        requestAnimationFrame(() => {
+            const target = document.querySelector(initialHash);
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        });
+    } else {
+        window.scrollTo(0, 0);
+    }
 });
