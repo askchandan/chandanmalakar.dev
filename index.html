@@ -8,6 +8,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <noscript>
+        <style>
+            #loading-screen {
+                display: none !important;
+            }
+        </style>
+    </noscript>
     <style>
         :root {
             --nav-width: clamp(72px, 10vw, 120px);
@@ -51,6 +58,14 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="loading-screen" id="loading-screen" aria-hidden="true">
+        <div class="loading-core">
+            <span class="loading-core-ring"></span>
+            <span class="loading-core-node"></span>
+        </div>
+        <p class="loading-label">Calibrating copilots…</p>
+    </div>
+    <div class="cursor-glow" id="cursor-glow" data-hidden="true" aria-hidden="true"></div>
     <nav class="nav-column nav-left" aria-label="Primary">
         <a href="#about" class="logo">cm.aiml</a>
         <div class="nav-links">
@@ -62,8 +77,8 @@
 
     <nav class="nav-column nav-right" aria-label="Secondary">
         <div class="nav-links">
-            <a href="#projects">Projects</a>
             <a href="#work">Experience</a>
+            <a href="#projects">Projects</a>
             <a href="#resume">Resume</a>
         </div>
         <a class="cta-badge" href="#contact">Open to collaborations</a>

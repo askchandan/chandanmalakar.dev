@@ -159,6 +159,132 @@ const initMobileNav = () => {
     });
 };
 
+const initCursorGlow = () => {
+    const cursorGlow = document.getElementById("cursor-glow");
+    if (!cursorGlow) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const coarsePointer = window.matchMedia("(pointer: coarse)");
+
+    let isGlowActive = true;
+    let animationFrameId;
+
+    if (prefersReducedMotion.matches || coarsePointer.matches) {
+        isGlowActive = false;
+        cursorGlow.remove();
+        return;
+    }
+
+    const subscribeToQuery = (query, callback) => {
+        if (typeof query.addEventListener === "function") {
+            query.addEventListener("change", callback);
+        } else if (typeof query.addListener === "function") {
+            query.addListener(callback);
+        }
+    };
+
+    let glowRadius = 42;
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let currentX = targetX;
+    let currentY = targetY;
+
+    const recalcRadius = () => {
+        if (!isGlowActive) return glowRadius;
+        glowRadius = Math.max(cursorGlow.getBoundingClientRect().width / 2, 32);
+        return glowRadius;
+    };
+
+    const setPosition = (x, y) => {
+        cursorGlow.style.setProperty("--cursor-x", `calc(${x}px - ${glowRadius}px)`);
+        cursorGlow.style.setProperty("--cursor-y", `calc(${y}px - ${glowRadius}px)`);
+    };
+
+    recalcRadius();
+    setPosition(currentX, currentY);
+
+    const hideGlow = () => {
+        if (!isGlowActive) return;
+        cursorGlow.dataset.hidden = "true";
+    };
+
+    document.addEventListener("pointermove", event => {
+        if (!isGlowActive) return;
+        targetX = event.clientX;
+        targetY = event.clientY;
+        cursorGlow.dataset.hidden = "false";
+    });
+
+    document.addEventListener("pointerdown", () => {
+        if (!isGlowActive) return;
+        cursorGlow.classList.add("cursor-glow--active");
+    });
+
+    document.addEventListener("pointerup", () => {
+        if (!isGlowActive) return;
+        cursorGlow.classList.remove("cursor-glow--active");
+    });
+
+    document.addEventListener("pointerleave", hideGlow);
+    window.addEventListener("blur", hideGlow);
+
+    const render = () => {
+        if (!isGlowActive) return;
+        currentX += (targetX - currentX) * 0.12;
+        currentY += (targetY - currentY) * 0.12;
+        setPosition(currentX, currentY);
+        animationFrameId = requestAnimationFrame(render);
+    };
+
+    window.addEventListener("resize", () => {
+        const previousRadius = glowRadius;
+        recalcRadius();
+        if (glowRadius !== previousRadius) {
+            setPosition(currentX, currentY);
+        }
+    });
+
+    const shutdownGlow = () => {
+        if (!isGlowActive) return;
+        isGlowActive = false;
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
+        cursorGlow.remove();
+    };
+
+    const handlePreferenceChange = event => {
+        if (event.matches) {
+            shutdownGlow();
+        }
+    };
+
+    subscribeToQuery(prefersReducedMotion, handlePreferenceChange);
+    subscribeToQuery(coarsePointer, handlePreferenceChange);
+
+    render();
+};
+
+const initLoadingScreen = () => {
+    const loadingScreen = document.getElementById("loading-screen");
+    if (!loadingScreen) return;
+
+    const hideLoader = () => {
+        if (loadingScreen.classList.contains("loading-screen--hidden")) return;
+        loadingScreen.classList.add("loading-screen--hidden");
+    };
+
+    window.addEventListener("load", () => {
+        setTimeout(hideLoader, 400);
+    });
+
+    setTimeout(hideLoader, 3200);
+
+    window.addEventListener("beforeunload", () => {
+        loadingScreen.classList.remove("loading-screen--hidden");
+    });
+};
+
 const initialHash = window.location.hash;
 if ("scrollRestoration" in window.history) {
     window.history.scrollRestoration = "manual";
@@ -175,6 +301,8 @@ window.addEventListener("DOMContentLoaded", () => {
     initContactForm();
     initMobileNav();
     initResumeDownload();
+    initCursorGlow();
+    initLoadingScreen();
     if (initialHash) {
         requestAnimationFrame(() => {
             const target = document.querySelector(initialHash);
