@@ -30,6 +30,35 @@ const initContactForm = () => {
     });
 };
 
+const initMobileNav = () => {
+    const toggle = document.querySelector(".mobile-nav-toggle");
+    const panel = document.querySelector(".mobile-nav-panel");
+    if (!toggle || !panel) return;
+
+    const closePanel = () => {
+        panel.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+    };
+
+    toggle.addEventListener("click", () => {
+        const isOpen = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!isOpen));
+        panel.classList.toggle("open", !isOpen);
+    });
+
+    panel.addEventListener("click", event => {
+        if (event.target.tagName === "A") {
+            closePanel();
+        }
+    });
+
+    window.addEventListener("resize", () => {
+        if (window.innerWidth > 1024) {
+            closePanel();
+        }
+    });
+};
+
 const initialHash = window.location.hash;
 if ("scrollRestoration" in window.history) {
     window.history.scrollRestoration = "manual";
@@ -44,6 +73,7 @@ if (initialHash) {
 window.addEventListener("DOMContentLoaded", () => {
     initSmoothScroll();
     initContactForm();
+    initMobileNav();
     if (initialHash) {
         requestAnimationFrame(() => {
             const target = document.querySelector(initialHash);
