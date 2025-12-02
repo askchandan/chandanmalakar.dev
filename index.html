@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chandan Malakar · AIML Engineer</title>
+    <meta name="description" content="Chandan Malakar builds OCR, RAG, and analytics pipelines across Python, LangChain, Docker, and AWS.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --nav-width: clamp(72px, 10vw, 120px);
+            --content-padding: clamp(1rem, 2vw, 2rem);
+        }
+
+        body {
+            margin: 0;
+            background: #040305;
+            color: #f5f6ff;
+            font-family: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        main {
+            margin-left: calc(var(--nav-width) + var(--content-padding));
+            margin-right: calc(var(--nav-width) + var(--content-padding));
+            padding-left: calc(var(--content-padding) + 0.5rem);
+            padding-right: calc(var(--content-padding) + 0.5rem);
+        }
+
+        .nav-column {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: var(--nav-width);
+        }
+
+        .nav-left {
+            left: 0;
+        }
+
+        .nav-right {
+            right: 0;
+        }
+
+        .hero-layout {
+            min-height: clamp(520px, 70vh, 760px);
+        }
+    </style>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="nav-column nav-left" aria-label="Primary">
+        <a href="#about" class="logo">cm.aiml</a>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#work">Work</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <nav class="nav-column nav-right" aria-label="Secondary">
+        <div class="nav-links">
+            <a href="#projects">Projects</a>
+            <a href="#work">Experience</a>
+            <a href="#resume">Resume</a>
+        </div>
+        <a class="cta-badge" href="#contact">Open to collaborations</a>
+    </nav>
+
+    <main>
+        <section id="about" class="panel panel-about" aria-labelledby="hero-title">
+            <div class="hero-layout">
+                <div class="hero">
+                    <p class="hero-eyebrow">AIML Engineer · Final-year CSE</p>
+                    <h1 id="hero-title">Chandan Malakar ships OCR-to-RAG copilots ready for launch.</h1>
+                    <p class="hero-subtext">Curious technologist and final-year Computer Science student and unapologetic tinkerer — I turn messy data into reliable, Dockerized assistants. I specialize in building smart, scalable systems — from ML pipelines to LLM-backed chatbots — that don’t just run, they deliver. With hands-on project deployments, hackathon wins, and a love for clean code, I’m ready to bring AI from whiteboards to production.</p>
+                    <div class="hero-cta">
+                        <a class="btn" href="#contact">Build together</a>
+                        <a class="btn ghost" href="#resume">Download CV</a>
+                    </div>
+                </div>
+                <figure class="hero-portrait">
+                    <div class="hero-portrait-frame">
+                        <img src="docs/chandan-portrait.jpg" alt="Chandan Malakar" width="640" height="853" decoding="async" fetchpriority="high">
+                    </div>
+                </figure>
+            </div>
+            <div class="profile-card">
+                <p class="label">Current focus</p>
+                <h3>FinSight OCR + RAG lab</h3>
+                <p>Pairing Qwen3 VL OCR, LangChain, and guardrailed LLM flows to make financial statements searchable in seconds.</p>
+                <ul>
+                    <li>92% extraction accuracy</li>
+                    <li>Dockerized triage APIs</li>
+                    <li>Latency &lt; 1.2s</li>
+                </ul>
+            </div>
+            <div class="about-grid">
+                <article>
+                    <h2>About Me</h2>
+                    <p>Data analyst turned AIML engineer based in Chennai. I iterate quickly, keep code clean, and bias toward measurable, production-ready solutions.</p>
+                </article>
+                <article>
+                    <h2>What I Do</h2>
+                    <ul class="pill-list">
+                        <li>Data workflow automation</li>
+                        <li>LLM + RAG orchestration</li>
+                        <li>ML model engineering</li>
+                        <li>DevOps &amp; CI/CD</li>
+                    </ul>
+                </article>
+                <article>
+                    <h2>Skills &amp; Tools</h2>
+                    <ul class="tag-cloud">
+                        <li>Python</li>
+                        <li>SQL</li>
+                        <li>C++</li>
+                        <li>Pandas</li>
+                        <li>NumPy</li>
+                        <li>LangChain</li>
+                        <li>Hugging Face</li>
+                        <li>ChromaDB</li>
+                        <li>Docker</li>
+                        <li>GitHub Actions</li>
+                        <li>AWS</li>
+                        <li>Power BI</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section id="work" class="panel panel-work" aria-labelledby="work-title">
+            <div class="panel-header">
+                <p class="section-eyebrow">Work</p>
+                <h2 id="work-title">Systems engineered with intent.</h2>
+            </div>
+            <div class="work-grid" id="experience">
+                <article>
+                    <header>
+                        <p class="label">May 2025 – Jul 2025 · Chennai</p>
+                        <h3>UNIDIF CORP · Data Analyst Intern</h3>
+                    </header>
+                    <p>Embedded with the manufacturing intelligence team to turn raw production data into decisions.</p>
+                    <ul>
+                        <li>Automated Python + SQL pipelines for 1k+ records, eliminating 40% manual prep.</li>
+                        <li>Ran regression + hypothesis tests that exposed defect trends and improved quality KPIs.</li>
+                        <li>Published weekly insight packs and partnered cross-functionally on data-backed actions.</li>
+                    </ul>
+                </article>
+                <article>
+                    <header>
+                        <p class="label">On campus · 2024 – Present</p>
+                        <h3>AIML builder & student leader</h3>
+                    </header>
+                    <p>Lead end-to-end OCR/RAG builds, mentor peers, and represent GenAI programs on campus.</p>
+                    <ul>
+                        <li>Google Student Ambassador (Gemini Edition) and Netrix Ideathon winner.</li>
+                        <li>Runner-up at Intellecthon 2025 for shipping an OCR insights copilot.</li>
+                        <li>Created repeatable templates for Docker, CI/CD, and demo storytelling.</li>
+                    </ul>
+                </article>
+            </div>
+
+        </section>
+
+        <section id="projects" class="panel panel-projects" aria-labelledby="projects-title">
+            <div class="panel-header">
+                <p class="section-eyebrow">Projects</p>
+                <h2 id="projects-title">OCR + RAG builds that prove the point.</h2>
+            </div>
+            <div class="project-grid">
+                <article>
+                    <header>
+                        <p class="label">Nov 2025 – Dec 2025</p>
+                        <h3>FinSight · OCR + LLM bank chatbot</h3>
+                    </header>
+                    <p>Qwen3:VL-OCR → LangChain → Hugging Face pipeline that cleans messy statements and serves realtime answers.</p>
+                    <ul>
+                        <li>92% extraction accuracy across multi-format PDFs.</li>
+                        <li>Guardrailed RAG flows with verifiable responses.</li>
+                        <li>Dockerized delivery for rapid QA.</li>
+                    </ul>
+                    <a href="https://github.com/askchandan/FinSight-OCR" target="_blank" rel="noreferrer">View project</a>
+                </article>
+                <article>
+                    <header>
+                        <p class="label">Oct 2025 – Nov 2025</p>
+                        <h3>Lexora · PDF AI assistant</h3>
+                    </header>
+                    <p>Embedding-powered PDF query engine with vector search and source-mapped answers for enterprise ingestion.</p>
+                    <ul>
+                        <li>ChromaDB store with custom embeddings.</li>
+                        <li>Upload, query, and status APIs for integrations.</li>
+                        <li>Monitoring hooks for latency and drift.</li>
+                    </ul>
+                    <a href="https://github.com/askchandan/Project-Lexora" target="_blank" rel="noreferrer">View project</a>
+                </article>
+                <article>
+                    <header>
+                        <p class="label">Jul 2025 – Aug 2025</p>
+                        <h3>LegalX · Legal advisory RAG system</h3>
+                    </header>
+                    <p>Retrieval engine over 10k+ case files with transparent citations for compliance teams.</p>
+                    <ul>
+                        <li>Transformer retrieval plus citation mapping.</li>
+                        <li>LangChain orchestration with guardrails.</li>
+                        <li>Prompt telemetry for trustable QA.</li>
+                    </ul>
+                    <a href="https://github.com/askchandan/LegalX-Redifined" target="_blank" rel="noreferrer">View project</a>
+                </article>
+            </div>
+        </section>
+
+        <section id="resume" class="panel panel-resume" aria-labelledby="resume-title">
+            <div class="resume-card">
+                <div>
+                    <p class="section-eyebrow">Resume</p>
+                    <h2 id="resume-title">Download the full story.</h2>
+                    <p>Two pages covering education, sprint-by-sprint experience, certifications, and awards.</p>
+                </div>
+                <a class="btn" href="docs/Chandan-Malakar-Resume.pdf" download>Download PDF</a>
+            </div>
+        </section>
+
+        <section id="contact" class="panel panel-contact" aria-labelledby="contact-title">
+            <div class="panel-header">
+                <p class="section-eyebrow">Contact</p>
+                <h2 id="contact-title">Let’s build the next AI workflow.</h2>
+            </div>
+            <div class="contact-content">
+                <form class="contact-form">
+                    <label>
+                        Name
+                        <input type="text" name="name" placeholder="Grace Hopper" required>
+                    </label>
+                    <label>
+                        Email
+                        <input type="email" name="email" placeholder="you@studio.com" required>
+                    </label>
+                    <label>
+                        Project context
+                        <textarea name="message" rows="4" placeholder="Tell me about the data, models, or stack." required></textarea>
+                    </label>
+                    <button type="submit" class="btn">Send signal</button>
+                </form>
+                <div class="contact-meta">
+                    <p class="label">Signal path</p>
+                    <ul>
+                        <li><a href="mailto:chandanmalakar7549@gmail.com">chandanmalakar7549@gmail.com</a></li>
+                        <li><a href="https://github.com/askchandan" target="_blank" rel="noreferrer">github.com/askchandan</a></li>
+                        <li><a href="https://linkedin.com/in/chandanmalakar" target="_blank" rel="noreferrer">linkedin.com/in/chandanmalakar</a></li>
+                    </ul>
+                    <p class="label">Location</p>
+                    <p>Chennai, Tamil Nadu · Open to remote</p>
+                </div>
+            </div>
+            <div class="toast" id="form-toast" role="status" aria-live="polite" hidden></div>
+        </section>
+    </main>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
