@@ -230,6 +230,7 @@ p {
     border: 1px solid rgba(215, 255, 107, 0.35);
     background: radial-gradient(circle at 30% 20%, rgba(215, 255, 107, 0.35), rgba(4, 4, 6, 0.9));
     box-shadow: 0 25px 55px rgba(0, 0, 0, 0.55), 0 0 60px rgba(215, 255, 107, 0.18);
+    transition: transform 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease;
 }
 
 .hero-portrait::after {
@@ -240,6 +241,8 @@ p {
     border-radius: 999px;
     background: radial-gradient(circle, rgba(215, 255, 107, 0.35), transparent 65%);
     filter: blur(30px);
+    opacity: 0.45;
+    transition: opacity 0.4s ease, filter 0.4s ease;
     z-index: -1;
     top: 50%;
     left: 50%;
@@ -256,6 +259,17 @@ p {
     pointer-events: none;
 }
 
+.hero-portrait:hover .hero-portrait-frame {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(215, 255, 107, 0.6);
+    box-shadow: 0 35px 65px rgba(0, 0, 0, 0.6), 0 0 80px rgba(215, 255, 107, 0.25);
+}
+
+.hero-portrait:hover::after {
+    opacity: 0.8;
+    filter: blur(40px);
+}
+
 .hero-portrait img {
     width: 100%;
     height: 100%;
@@ -265,31 +279,66 @@ p {
 }
 
 .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     border-radius: 999px;
-    padding: 0.8rem 1.8rem;
+    padding: 0.85rem 2rem;
     text-decoration: none;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.btn:hover {
-    transform: translateY(-2px);
-}
-
-.btn {
     background: var(--accent-strong);
     color: #0a0a0a;
+    box-shadow: 0 6px 14px rgba(215, 255, 107, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    isolation: isolate;
+}
+
+.btn::after {
+    content: "";
+    position: absolute;
+    inset: 0.18rem 0.3rem;
+    border-radius: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+
+.btn:hover,
+.btn:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px rgba(215, 255, 107, 0.45);
+    filter: brightness(1.03);
+}
+
+.btn:hover::after,
+.btn:focus-visible::after {
+    opacity: 0.85;
 }
 
 .btn.ghost {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.03);
     color: var(--accent-strong);
     border: 1px solid rgba(215, 255, 107, 0.5);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
+
+.btn.ghost::after {
+    border: 1px solid rgba(215, 255, 107, 0.45);
+}
+
+.btn.ghost:hover,
+.btn.ghost:focus-visible {
+    color: #101010;
+    background: rgba(215, 255, 107, 0.12);
+    box-shadow: 0 18px 32px rgba(0, 0, 0, 0.5);
+}
+
 
 .profile-card,
 .work-grid article,

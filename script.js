@@ -1,14 +1,14 @@
-const initNavigation = () => {
-    const navLinks = document.querySelectorAll(".nav-links a");
-    navLinks.forEach(link => {
-        link.addEventListener("click", e => {
+const initSmoothScroll = () => {
+    const scrollLinks = document.querySelectorAll("a[href^='#']:not([href='#'])");
+    scrollLinks.forEach(link => {
+        link.addEventListener("click", event => {
             const href = link.getAttribute("href");
-            if (href && href.startsWith("#")) {
-                e.preventDefault();
-                const target = document.querySelector(href);
-                if (target) {
-                    target.scrollIntoView({ behavior: "smooth" });
-                }
+            if (!href) return;
+
+            const target = document.querySelector(href);
+            if (target) {
+                event.preventDefault();
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
             }
         });
     });
@@ -28,7 +28,31 @@ const initContactForm = () => {
     });
 };
 
+const handleInitialHashScroll = () => {
+    const initialHash = window.location.hash;
+    if (!initialHash) {
+        window.scrollTo(0, 0);
+        return;
+    }
+
+    const cleanUrl = `${window.location.pathname}${window.location.search}`;
+    history.replaceState(null, "", cleanUrl);
+    window.scrollTo(0, 0);
+
+    requestAnimationFrame(() => {
+        const target = document.querySelector(initialHash);
+        if (target) {
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    });
+};
+
+if ("scrollRestoration" in window.history) {
+    window.history.scrollRestoration = "manual";
+}
+
 window.addEventListener("DOMContentLoaded", () => {
-    initNavigation();
+    initSmoothScroll();
     initContactForm();
+    handleInitialHashScroll();
 });
