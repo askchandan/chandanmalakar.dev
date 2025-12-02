@@ -1,25 +1,41 @@
 const initSmoothScroll = () => {
     const scrollLinks = document.querySelectorAll("a[href^='#']:not([href='#'])");
+    const getMainTopPadding = () => {
+        const main = document.querySelector("main");
+        if (!main) return 0;
+        const value = parseFloat(window.getComputedStyle(main).paddingTop);
+        return Number.isNaN(value) ? 0 : value;
+    };
+
     scrollLinks.forEach(link => {
         link.addEventListener("click", event => {
             const href = link.getAttribute("href");
             if (!href) return;
 
+            const isPageTopLink = href === "#top" || href === "#page-top";
             const target = document.querySelector(href);
-            if (target) {
-                event.preventDefault();
-                target.scrollIntoView({ behavior: "smooth", block: "start" });
-                const cleanUrl = `${window.location.pathname}${window.location.search}`;
-                history.replaceState(null, "", cleanUrl);
+            if (!target && !isPageTopLink) return;
+
+            event.preventDefault();
+
+            if (isPageTopLink) {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            } else {
+                const requiresTopAlignment = target.dataset.scrollAnchor === "top";
+                const offset = requiresTopAlignment ? getMainTopPadding() : 0;
+                const targetPosition = target.getBoundingClientRect().top + window.scrollY - offset;
+                window.scrollTo({ top: Math.max(targetPosition, 0), behavior: "smooth" });
             }
+
+            const cleanUrl = `${window.location.pathname}${window.location.search}`;
+            history.replaceState(null, "", cleanUrl);
         });
     });
 };
 
 const initContactForm = () => {
     const form = document.querySelector("[data-contact-form]");
-    const iframe = document.getElementById("form-submit-frame");
-    if (!form || !iframe) return;
+    if (!form) return;
 
     const toast = document.getElementById("form-toast");
     let toastTimeoutId;
@@ -47,19 +63,41 @@ const initContactForm = () => {
         }
     };
 
-    form.addEventListener("submit", () => {
+    form.addEventListener("submit", async event => {
+        event.preventDefault();
         if (form.dataset.submitting === "true") return;
+
         form.dataset.submitting = "true";
         showToast("Sending signal…", "pending");
         setSubmitting(true);
-    });
 
-    iframe.addEventListener("load", () => {
-        if (form.dataset.submitting !== "true") return;
-        form.dataset.submitting = "false";
-        setSubmitting(false);
-        showToast("Message delivered. I’ll be in touch soon.", "success");
-        form.reset();
+        try {
+            const formData = new FormData(form);
+            const response = await fetch(form.action, {
+                method: "POST",
+                headers: { Accept: "application/json" },
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`Request failed with status ${response.status}`);
+            }
+
+            const payload = await response.json().catch(() => ({}));
+            const isSuccessful = payload.success === true || payload.success === "true" || Object.keys(payload).length === 0;
+            if (!isSuccessful) {
+                throw new Error(payload.message || "Unable to send message.");
+            }
+
+            showToast("Message delivered. I’ll be in touch soon.", "success");
+            form.reset();
+        } catch (error) {
+            console.error("Contact form submission failed", error);
+            showToast("Message failed. Please email me directly.", "error");
+        } finally {
+            form.dataset.submitting = "false";
+            setSubmitting(false);
+        }
     });
 };
 
@@ -73,14 +111,22 @@ const initResumeDownload = () => {
 
     trigger.addEventListener("click", event => {
         event.preventDefault();
-        const tempLink = document.createElement("a");
-        tempLink.href = source;
-        tempLink.download = filename;
-        tempLink.rel = "noopener";
-        tempLink.target = "_self";
-        document.body.appendChild(tempLink);
-        tempLink.click();
-        tempLink.remove();
+
+        const absoluteSource = new URL(source, window.location.href).toString();
+
+        const downloadLink = document.createElement("a");
+        downloadLink.href = absoluteSource;
+        downloadLink.download = filename;
+        downloadLink.rel = "noopener";
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        downloadLink.remove();
+
+        const previewWindow = window.open(absoluteSource, "_blank", "noopener");
+        if (!previewWindow) {
+            console.warn("Resume preview blocked by the browser's popup settings.");
+        }
     });
 };
 
