@@ -53,6 +53,10 @@ body {
     pointer-events: none;
 }
 
+.loading-screen[hidden] {
+    display: none !important;
+}
+
 .loading-core {
     position: relative;
     width: 120px;

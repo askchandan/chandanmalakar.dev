@@ -269,9 +269,41 @@ const initLoadingScreen = () => {
     const loadingScreen = document.getElementById("loading-screen");
     if (!loadingScreen) return;
 
+    let finalizeFallbackId;
+
+    const finalizeHide = () => {
+        if (loadingScreen.dataset.loaderState === "hidden") return;
+        loadingScreen.dataset.loaderState = "hidden";
+        loadingScreen.setAttribute("hidden", "");
+        if (finalizeFallbackId) {
+            clearTimeout(finalizeFallbackId);
+            finalizeFallbackId = undefined;
+        }
+    };
+
     const hideLoader = () => {
-        if (loadingScreen.classList.contains("loading-screen--hidden")) return;
+        if (loadingScreen.dataset.loaderState === "hidden" || loadingScreen.dataset.loaderState === "hiding") {
+            return;
+        }
+
+        loadingScreen.dataset.loaderState = "hiding";
+
+        const handleTransitionEnd = event => {
+            if (event.target !== loadingScreen || event.propertyName !== "opacity") {
+                return;
+            }
+            loadingScreen.removeEventListener("transitionend", handleTransitionEnd);
+            finalizeHide();
+        };
+
+        loadingScreen.addEventListener("transitionend", handleTransitionEnd);
         loadingScreen.classList.add("loading-screen--hidden");
+
+        finalizeFallbackId = setTimeout(() => {
+            if (loadingScreen.dataset.loaderState === "hidden") return;
+            loadingScreen.removeEventListener("transitionend", handleTransitionEnd);
+            finalizeHide();
+        }, 900);
     };
 
     window.addEventListener("load", () => {
@@ -281,6 +313,12 @@ const initLoadingScreen = () => {
     setTimeout(hideLoader, 3200);
 
     window.addEventListener("beforeunload", () => {
+        if (finalizeFallbackId) {
+            clearTimeout(finalizeFallbackId);
+            finalizeFallbackId = undefined;
+        }
+        loadingScreen.removeAttribute("hidden");
+        delete loadingScreen.dataset.loaderState;
         loadingScreen.classList.remove("loading-screen--hidden");
     });
 };
